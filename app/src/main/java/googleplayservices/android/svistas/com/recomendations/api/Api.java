@@ -1,6 +1,8 @@
 package googleplayservices.android.svistas.com.recomendations.api;
 
 
+import googleplayservices.android.svistas.com.recomendations.model.ActiveListings;
+import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Query;
 

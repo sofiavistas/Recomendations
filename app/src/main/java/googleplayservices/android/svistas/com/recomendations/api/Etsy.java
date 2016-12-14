@@ -1,5 +1,7 @@
 package googleplayservices.android.svistas.com.recomendations.api;
 
+import com.google.android.gms.common.api.Api;
+
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 

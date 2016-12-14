@@ -1,4 +1,4 @@
-package com.etsy.android.samples.sharesy.model;
+package googleplayservices.android.svistas.com.recomendations.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
