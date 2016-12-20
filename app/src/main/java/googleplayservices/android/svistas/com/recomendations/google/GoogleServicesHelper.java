@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
 
 /**
  * Created by svistas on 19/12/16.
@@ -34,6 +35,10 @@ public class GoogleServicesHelper implements GoogleApiClient.ConnectionCallbacks
         this.apiClient = new GoogleApiClient.Builder(activity)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
+                .addApi(Plus.API,
+                        Plus.PlusOptions.builder()
+                .setServerClientId("496785369370-pjb25h1krlen66h840o1ss5p2tqrghhg.apps.googleusercontent.com")
+                .build())
                 .build();
     }
 
