@@ -1,6 +1,8 @@
 package googleplayservices.android.svistas.com.recomendations;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.plus.PlusOneButton;
+import com.google.android.gms.plus.PlusShare;
 import com.squareup.picasso.Picasso;
 
 import googleplayservices.android.svistas.com.recomendations.api.Etsy;
@@ -28,6 +31,7 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingH
 
 
     public static final int REQUEST_CODE_PLUS_ONE = 10;
+    private static final int REQUEST_CODE_SHARE = 11 ;
     private boolean isGooglePlayServicesAvailable;
 
     private LayoutInflater inflater;
@@ -56,10 +60,37 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingH
 
         if(isGooglePlayServicesAvailable){
             holder.plusOneButton.setVisibility(View.VISIBLE);
-            holder.plusOneButton.initialize(listing.url, position);
+            holder.plusOneButton.initialize(listing.url, REQUEST_CODE_PLUS_ONE);
             holder.plusOneButton.setAnnotation(PlusOneButton.ANNOTATION_NONE);
+
+            holder.shareButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new PlusShare.Builder(activity)
+                            .setType("text/plain")
+                            .setText("Check this item on Etsy " + listing.title)
+                            .setContentUrl(Uri.parse(listing.url))
+                            .getIntent();
+
+                    activity.startActivityForResult(intent, REQUEST_CODE_SHARE);
+                }
+            });
+
         } else {
             holder.plusOneButton.setVisibility(View.GONE);
+
+            holder.shareButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.putExtra(Intent.EXTRA_TEXT, "Checkout this item on Etsy "
+                            + listing.title + " " + listing.url );
+                    intent.setType("text/plain");
+
+                    activity.startActivityForResult(Intent.createChooser(intent, "Share"), REQUEST_CODE_SHARE );
+
+                }
+            });
         }
 
         Picasso.with(holder.imageView.getContext())
