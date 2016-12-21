@@ -5,9 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.plus.PlusOneButton;
 import com.squareup.picasso.Picasso;
 
 import googleplayservices.android.svistas.com.recomendations.api.Etsy;
@@ -52,10 +54,17 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingH
         holder.priceView.setText(listing.price);
         holder.shopNameView.setText(listing.Shop.shop_name);
 
+        if(isGooglePlayServicesAvailable){
+            holder.plusOneButton.setVisibility(View.VISIBLE);
+            holder.plusOneButton.initialize(listing.url, position);
+            holder.plusOneButton.setAnnotation(PlusOneButton.ANNOTATION_NONE);
+        } else {
+            holder.plusOneButton.setVisibility(View.GONE);
+        }
+
         Picasso.with(holder.imageView.getContext())
                 .load(listing.Images[0].url_570xN)
                 .into(holder.imageView);
-
 
     }
 
@@ -114,6 +123,8 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingH
         public TextView titleView;
         public TextView shopNameView;
         public TextView priceView;
+        public PlusOneButton plusOneButton;
+        public ImageButton shareButton;
 
         public ListingHolder(View itemView) {
             super(itemView);
@@ -123,6 +134,8 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingH
             titleView = (TextView) itemView.findViewById(R.id.listing_title);
             shopNameView = (TextView) itemView.findViewById(R.id.listing_shop_name);
             priceView = (TextView) itemView.findViewById(R.id.listing_price);
+            plusOneButton = (PlusOneButton) itemView.findViewById(R.id.listing_plus_one_btn);
+            shareButton = (ImageButton) itemView.findViewById(R.id.listing_share_btn);
         }
     }
 }
